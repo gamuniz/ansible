@@ -361,8 +361,11 @@ class FieldAttributeBase(with_metaclass(BaseMeta, object)):
                     value = getattr(self, name)
                 else:
                     # if the attribute contains a variable, template it now
-                    value = templar.template(getattr(self, name))
-
+                    try:
+                       value = templar.template(getattr(self,name))
+                    except:
+                        print('Error: %s created %s' % (getattr(self, name), e))
+                        raise e
                 # if this evaluated to the omit value, set the value back to
                 # the default specified in the FieldAttribute and move on
                 if omit_value is not None and value == omit_value:
